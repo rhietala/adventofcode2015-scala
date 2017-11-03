@@ -4,15 +4,15 @@ import scala.io.Source
 
 object Day02 {
   case class Present(l: Int, w: Int, h: Int)
+
   val presentDimensions = """(\d+)x(\d+)x(\d+)""".r
 
-  def parsePresent(input: String): Option[Present] =
-    input match {
-      case presentDimensions(l, w, h) => Some(Present(l.toInt, w.toInt, h.toInt))
-      case _ => None
-    }
+  val parsePresent: String => Option[Present] = _ match {
+    case presentDimensions(l, w, h) => Some(Present(l.toInt, w.toInt, h.toInt))
+    case _ => None
+  }
 
-  def wrapping(p: Present): Int = {
+  val wrapping: Present => Int = p => {
     val lw = p.l * p.w
     val wh = p.w * p.h
     val hl = p.h * p.l
@@ -20,31 +20,25 @@ object Day02 {
     2 * lw + 2 * wh + 2 * hl + List(lw, wh, hl).min
   }
 
-  def ribbon(p: Present): Int = {
+  val ribbon: Present => Int = p =>
     List(p.l, p.w, p.h)
       .sorted
       .init
       .map(_ * 2)
       .foldLeft(0)(_ + _) +
     (p.l * p.w * p.h)
-  }
 
-  def parseAndCalculate(f: Present => Int)(input: String): Int =
+  val parseAndCalculate: (Present => Int) => String => Int = f => input =>
     parsePresent(input) match {
       case Some(p: Present) => f(p)
       case _ => 0
     }
 
-  def part1(input: String): Int =
-    parseAndCalculate(wrapping)(input)
+  val part1: String => Int = parseAndCalculate(wrapping)
+  val part2: String => Int = parseAndCalculate(ribbon)
 
-  def part2(input: String): Int =
-    parseAndCalculate(ribbon)(input)
-
-  def calculate(f: String => Int)(inputs: List[String]): Int =
-    inputs
-      .map(f)
-      .foldLeft(0)(_ + _)
+  val calculate: (String => Int) => List[String] => Int = f =>
+    _.map(f).foldLeft(0)(_ + _)
 
   def main(args: Array[String]): Unit = {
     val file: String = getClass.getResource("").getPath + "day02.txt"

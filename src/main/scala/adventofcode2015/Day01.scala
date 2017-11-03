@@ -3,23 +3,20 @@ package adventofcode2015
 import scala.io.Source
 
 object Day01 {
-  def parseChar(c: Char): Int =
-    c match {
-      case '(' => 1
-      case ')' => -1
-      case _ => 0
-    }
+  val parseChar: Char => Int = _ match {
+    case '(' => 1
+    case ')' => -1
+    case _ => 0
+  }
 
-  def part1(input: String): Int =
-    input
-      .toList
-      .map(parseChar)
-      .foldLeft(0)(_ + _)
+  val sToInts: String => List[Int] =
+    _.toList.map(parseChar)
 
-  def part2(input: String): Int =
-    input
-      .toList
-      .map(parseChar)
+  val part1: String => Int =
+    sToInts(_).foldLeft(0)(_ + _)
+
+  val part2: String => Int =
+    sToInts(_)
       .map { var f = 0; m => { f += m; f } }
       .zipWithIndex
       .find { case (f, index) => f < 0 }
