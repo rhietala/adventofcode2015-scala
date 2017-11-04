@@ -13,6 +13,7 @@ lazy val root = (project in file(".")).
 
 lazy val day01 = taskKey[Unit]("Day 01")
 fullRunTask(day01, Compile, "adventofcode2015.Day01")
-
 lazy val day02 = taskKey[Unit]("Day 02")
 fullRunTask(day02, Compile, "adventofcode2015.Day02")
+lazy val day03 = taskKey[Unit]("Day 03")
+fullRunTask(day03, Compile, "adventofcode2015.Day03")
